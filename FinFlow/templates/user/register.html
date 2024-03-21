@@ -1,0 +1,203 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% load static %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/user/register.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+</head>
+
+<body class="text-center">
+
+{% if user.is_authenticated %}
+<script type="text/javascript">
+  location.href="/logout";
+</script>
+
+{% else %}
+    <main class="form-signin">
+            <form method="post" action=".">
+            {% csrf_token %}
+            <img class="mb-4" src="{% static 'image/pample_logo_symbol.png' %}" alt="" width="72" height="72">
+            <h1 class="h3 mb-3 fw-normal">회원가입</h1>
+
+            <!-- 아이디 입력 -->
+            <div class="form-floating">
+                <input
+                    id="floatingInput username"
+                    class="form-control"
+                    type="id"
+                    placeholder="아이디" 
+                    name="user_id"
+                    maxlength='15'
+                    oninput="this.value = this.value.replace(/[^A-Za-z0-9]/g, '').replace(/(\..*)\./g, '$1');"
+                />
+                
+                <label for="floatingInput">
+                    <p class="p-name">ID</p>
+                    <p class="p-ex">(4~15자리의 영문, 숫자 조합)</p>
+                </label>
+
+            </div>
+
+            <span id="id_error" class="forms_error" style="margin-top: 2px;">
+                {% for error in form.user_id.errors %}
+                {{ error }} 
+                {% endfor %}
+            </span>
+
+            <p class="mt-1 text-muted"></p>
+
+            <!-- 패스워드 입력 -->
+            <div class="form-floating">
+                <input
+                    id="floatingPassword2"
+                    class="form-control form-border"
+                    type="password"
+                    placeholder="Password"
+                    name="password2"
+                    maxlength='20'
+                />
+
+                <label for="floatingPassword2">
+                    <p class="p-name">Password</p>
+                    <p class="p-ex">(8개 이상의 문자, 숫자 조합)</p>
+                </label>
+
+            </div>
+
+            <span id="pw2_error" class="forms_error" style="margin-top: -10px; text-align: left;">
+                {% for error in form.password2.errors %}
+                {{ error }}
+                {% endfor %}
+            </span>
+
+            <p class="mt-1 text-muted"></p>  
+            
+            <!--비밀번호확인-->
+            <div class="form-floating">
+                <input
+                    id="floatingPassword1"
+                    class="form-control form-border"
+                    type="password"
+                    placeholder="Password"
+                    name="password1"
+                    maxlength='20'
+                />
+
+                <label for="floatingPassword1">
+                    Password 확인
+                </label>
+
+            </div>
+
+            <span id="pw1_error" class="forms_error" style="margin-top: -10px;">
+                {% for error in form.password1.errors %}
+                {{ error }}
+                {% endfor %}
+            </span>
+
+            <!-- 사업자등록번호 입력 -->
+            <div class="form-floating">
+                <input
+                    id="floatingInput usercmpbnum"
+                    class="form-control"
+                    type="text"
+                    placeholder="사업자등록번호" 
+                    name="user_biznum"
+                    maxlength='10'
+                    oninput="this.value = this.value.replace(/[^A-Za-z0-9]/g, '').replace(/(\..*)\./g, '$1');"
+                />
+                
+                <label for="floatingInput usercmpbnum">
+                    <p class="p-name">사업자등록번호</p>
+                    <p class="p-ex">하이픈(-)을 제외한 숫자</p>
+                </label>
+
+            </div>
+            <p class="mt-1 text-muted"></p> 
+
+            <!--휴대폰번호-->
+            <div class="form-floating">
+                <input
+                    id="id_hp floatingHP"
+                    class="form-control form-border-hp"
+                    type="text"
+                    placeholder="휴대폰번호"
+                    name="hp"
+                    maxlength='11'
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                />
+
+                <label for="floatingHP">
+                    <p class="p-name">H.P</p>
+                    <p class="p-ex">(하이픈(-)을 제외한 숫자로 입력)</p>
+                </label>
+
+                <button class="w-20 btn btn-lg btn-primary btn-color auth-btn"
+                        type="submit"
+                        formaction="../api/v1/auth-message"
+                        formtarget="blankifr"
+                        onclick="btnActive();">
+                        인증<br>요청
+                </button>
+
+            </div>
+
+            <span id="hp_error" class="forms_error" style="margin-top: 2px;">
+                {% if errors.hp %}
+                {{ errors.hp }}
+                {% endif %}
+            </span>
+
+            <p class="mt-1 text-muted"></p>
+
+            <div class="">
+                <input
+                    id="id_auth"
+                    class="form-control auth-form"
+                    type="text"
+                    name="auth"
+                    placeholder="인증번호 입력"
+                    maxlength='6'
+                    disabled
+                    oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                />
+
+                <div id="timerDisplay" class="timerpos">
+                    5:00
+                </div>
+
+            </div>
+
+            <span class="forms_error" style="margin-top:2px;">
+                {% if errors.auth %}
+                {{ errors.auth}}
+                {% endif %}
+            </span>
+
+            <p class="mt-1 text-muted"></p>
+
+            <button class="w-100 btn btn-lg btn-primary btn-color" type="submit">
+                회원가입
+            </button>  
+        
+        </form>
+
+        <a class="before"href="/">
+            이전 페이지로
+        </a>
+
+{% endif %}
+
+</body>
+
+<iframe name='blankifr' style='display:none;'></iframe>
+<script>
+	$(document).ready(function(){
+        document.getElementById("hp_error").innerHTML=""
+        });
+</script>
+<script src="{% static 'js/user/register.js' %}"></script>
+
+{% endblock %}

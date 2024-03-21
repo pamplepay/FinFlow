@@ -50,12 +50,13 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     
-    # # for social login
-    # 'django.contrib.sites',
-    # 'allauth',
-    # 'allauth.account',
-    # 'allauth.socialaccount',
-    # 'allauth.socialaccount.providers.kakao', 
+    # for social login
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.kakao', 
+    'allauth.socialaccount.providers.naver',     
     
     # for bootstrap4
     'bootstrap4',
@@ -67,6 +68,7 @@ INSTALLED_APPS += [
     'rest_framework',
     'rest_framework_simplejwt',
     'user.apps.UserConfig',      
+    'finflow_control.apps.FinflowControlConfig'
 ]
 
 MIDDLEWARE = [
@@ -108,8 +110,22 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': BASE_DIR / 'db.sqlite3',
+        'OPTIONS': {
+            'timeout': 20,  # seconds
+        }
     }
 }
+
+# DATABASES = {
+#     'default': {
+#         'ENGINE': 'django.db.backends.mysql',
+#         'NAME': 'dbfinflow',
+#         'USER' : 'finflow',
+#         'PASSWORD' : 'finflow1004',
+#         'HOST' : '103.60.126.122',
+#         'PORT' : '3306',
+#     }
+# }
 
 
 # Password validation
@@ -163,20 +179,31 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # CORS-HOSTS
-##SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
-##SESSION_COOKIE_SECURE = True
-##CSRF_COOKIE_SECURE = True
-##SECURE_SSL_REDIRECT = True
-CORS_ORIGIN_ALLOW_ALL = True
-CORS_ALLOWED_ORIGINS = [
-    "",  # 허용할 도메인 주소 추가    
-] 
-CORS_ORIGIN_WHITELIST = (
-    "http://localhost:3000",
-    "http://127.0.0.1:8000",
-    "http://ilium.co.kr",    
-)
+#  HTTPS를 통한 요청임을 나타내는 HTTP 헤더를 정의합니다. 
+# 프록시 또는 로드 밸런서 뒤에서 Django를 운영하는 경우 유용합니다.
+#SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
+# 이 설정들은 쿠키가 오직 HTTPS를 통해서만 전송되도록 강제합니다. 
+# 사이트가 전체적으로 HTTPS를 사용하는 경우에만 True로 설정해야 합니다.
+# SESSION_COOKIE_SECURE = True
+# CSRF_COOKIE_SECURE = True
+
+# 모든 요청을 HTTPS로 리다이렉트합니다. 사이트가 HTTPS를 전적으로 사용하는 경우에 적합합니다.
+# SECURE_SSL_REDIRECT = True
+
+# 모든 도메인에서의 CORS 요청을 허용합니다. 
+# 이 설정이 True일 경우, CORS_ALLOWED_ORIGINS 및 CORS_ORIGIN_WHITELIST 설정은 무시됩니다. 
+# 보안 관점에서, 특정 도메인에 대해서만 CORS 요청을 허용하는 것이 좋습니다.
+CORS_ORIGIN_ALLOW_ALL = True
+# CORS_ALLOWED_ORIGINS = [
+#     "http://ilium.co.kr",  # 허용할 도메인 주소 추가    
+#     "http://localhost:3000",
+#     "http://127.0.0.1:8000",
+#     "http://ilium.co.kr"
+# ] 
+
+# 허용할 HTTP 메소드와 헤더를 정의합니다. 
+# API가 필요로 하는 메소드와 헤더에 맞추어 조정할 수 있습니다.
 CORS_ALLOW_METHODS = [
     'GET',
     'POST',
@@ -196,23 +223,27 @@ CORS_ALLOW_HEADERS = [
     'x-csrftoken',
     'x-requested-with',
 ]
+# 인증 정보(쿠키, HTTP 인증 및 클라이언트 SSL 인증서 등)를 포함한 요청을 허용합니다. 
+# 보안상의 이유로, 필요한 경우에만 True로 설정해야 합니다.
 CORS_ALLOW_CREDENTIALS = True
 
 # Admin 사이트 http로 접근 시 접근 가능하도록
 CSRF_TRUSTED_ORIGINS = ['https://ilium.co.kr']
 
-REST_FRAMEWORK = {
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        # 'rest_framework.authentication.SessionAuthentication',
-        # 'rest_framework.authentication.BasicAuthentication',
-        'rest_framework_simplejwt.authentication.JWTAuthentication',
-    ),
-    'DEFAULT_PERMISSION_CLASSES': (
-        # 'rest_framework.permissions.IsAuthenticated', # 인증된 사용자만 접근
-        # 'rest_framework.permissions.IsAdminUser', # 관리자만 접근
-        'rest_framework.permissions.AllowAny', # 누구나 접근
-    ),
-}
+# 여기에서는 JWT 인증을 사용하며, 모든 사용자에게 접근을 허용(AllowAny)하는 설정으로 되어 있습니다. 
+# 필요에 따라 인증 방식을 변경하거나, 접근 권한을 조정할 수 있습니다.
+# REST_FRAMEWORK = {
+#     'DEFAULT_AUTHENTICATION_CLASSES': (
+#         'rest_framework.authentication.SessionAuthentication',
+#         'rest_framework.authentication.BasicAuthentication',
+#         'rest_framework_simplejwt.authentication.JWTAuthentication',
+#     ),
+#     'DEFAULT_PERMISSION_CLASSES': (
+#         'rest_framework.permissions.IsAuthenticated', # 인증된 사용자만 접근
+#         'rest_framework.permissions.IsAdminUser', # 관리자만 접근
+#         'rest_framework.permissions.AllowAny', # 누구나 접근
+#     ),
+# }
 
 # User Model settings
 LOGIN_URL = '/login/'

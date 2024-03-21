@@ -18,5 +18,7 @@ from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('user/', include('user.urls')), # account 앱의 urls.py를 포함시킵니다.  
+    path('', include('user.urls')), # user 앱의 urls.py를 포함시킵니다.
+    path('', include('finflow_control.urls')), # finflow_control 앱의 urls.py를 포함시킵니다.  
+    # path('user/', include('user.urls')), 
 ]

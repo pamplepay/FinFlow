@@ -1,0 +1,124 @@
+{% extends 'base.html' %}
+{% block content %}
+
+{% load static %}
+<head>
+    <link rel="stylesheet" href="{% static 'css/user/index.css' %}">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
+</head>
+
+<body class="text-center">
+
+{% if user.is_authenticated %}
+<script type="text/javascript">
+    location.href="/logout";
+</script>
+
+{% else %}
+
+    <main class="form-signin">
+        <form method="post" action=".">
+          {% csrf_token %}
+
+          <img class="mb-4" src="{% static 'image/pample_logo_symbol.png' %}" alt="" width="72" height="72">
+          <h1 class="h3 mb-3 fw-normal">정 산 유</h1>
+        
+          <div class="form-floating">
+              <input
+                  id="floatingInput"
+                  class="form-control"
+                  type="id"
+                  placeholder="아이디"            
+                  name="user_id"
+                  maxlength='17'/>
+
+            <label for="floatingInput">
+                ID
+            </label>
+
+          </div>
+
+          <p class="mt-1 text-muted"></p>
+
+          <div class="form-floating">
+              <input
+                  id="floatingPassword"
+                  class="form-control"
+                  type="password"
+                  placeholder="Password"            
+                  name="password"
+                  maxlength='17'/>
+
+            <label for="floatingPassword">
+                Password
+            </label>
+
+          </div>
+        
+          <!-- <div class="checkbox mb-3">
+            <label>
+              <input type="checkbox" value="remember-me"> Remember me
+            </label>
+          </div> -->
+          <p class="mt-2 text-muted"></p>
+
+          <button
+                class="w-100 btn btn-lg btn-primary btn-color"
+                type="submit">
+              로그인
+          </button> 
+
+          <p class="mt-3 text-muted"></p>     
+
+          <button
+                class="w-100 btn btn-lg btn-primary btn-color"
+                onclick="location.href = '/register'; return false;">
+                회원가입
+          </button>
+
+          <p class="mt-2 text-muted"></p>  
+
+          {% load socialaccount %}
+          <!--{% comment %} <button
+              class="btn"
+              style="text-align:left; background-image: url({% static 'image/naver.png' %}); background-size: cover;
+              width: 135px; height: 37px; float:left;  border:none;"
+              onclick="location.href = ''; return false;">
+          </button>
+          <button
+              class="btn"
+              style="text-align:left; background-image: url({% static 'image/kako.png' %}); background-size: cover;
+              width: 135px; height: 37px; float:right; border:none;"
+              onclick="location.href = '{% provider_login_url 'naver' method='oauth2' %}'; return false;">
+          </button> {% endcomment %}-->
+
+          <div style="height: 1px;"></div>
+
+          <p class="mt-5 mb-3 text-muted">&copy; Copyright (주)팜플페이 </p>
+        
+        </form>
+    </main>
+    {% if messages %} {% for message in messages %}
+    <div class="moveconfirm active">
+        <div class="confirm-title">로그인 오류</div>
+        <div class="confirm-line"></div>
+        <div class="confirm-message">{{ message }}</div>
+        <div class="confirm-answer-box">
+            <div class="confirm-answer-omT ok">확인</div>
+        </div>
+    </div>
+    <div class="confirm-overlay"></div>
+    {% endfor %} {% endif %}
+
+{% endif %}
+</body>
+
+<script>
+    $(".ok").on("click", function () {
+        $(".moveconfirm").removeClass("active");
+        $(".moveconfirm").addClass("none");
+        $(".confirm-overlay").fadeOut();
+    });
+</script>
+
+{% endblock %}

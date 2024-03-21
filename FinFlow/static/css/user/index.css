@@ -1,0 +1,115 @@
+html,
+body {
+  height: 100%;
+}
+
+body {
+  display: flex;
+  align-items: center;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background-color: #f5f5f5;
+}
+        
+.form-signin {
+  width: 100%;
+  max-width: 330px;
+  padding: 15px;
+  margin: auto;
+}
+
+.form-signin .checkbox {
+  font-weight: 400;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="id"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin input[type="password"] {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.btn-color {
+    background-color: rgb(108,188,202);
+    border-color: rgb(133,199,212);
+}
+
+.btn-color:hover {
+    background-color: rgb(133,199,212);
+    border-color: rgb(133,199,212);
+}
+
+.moveconfirm {
+    position: fixed;
+    display: none;
+    flex-direction: column;
+    align-items: center;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, 0);
+    border-radius: 16px;
+    width: 320px;
+    height: 140px;
+    color: #777777;
+    background-color: #ffffff;
+    font-size: 12px;
+    font-weight: 400;
+    transition: all 0.3s;
+    z-index: 999;
+}
+
+.active {
+    display: flex;
+  }
+
+.moveconfirm.active {
+    display: flex;
+}
+
+.confirm-title {
+    margin-top: 10px;
+    margin-bottom: 15px;
+}
+
+.confirm-line {
+    border: 1px solid #777777;
+    width: 80%;
+    margin-bottom: 20px;
+}
+
+.confirm-answer-box {
+    display: flex;
+    width: 90%;
+}
+
+.confirm-answer-omT {
+    background-color: rgb(108,188,202);
+    color: rgb(255, 255, 255);
+    width: 50%;
+    margin-left: 70px;
+    margin-top: 20px;
+    border: 1px solid #ffffff;
+    border-radius: 32px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.confirm-overlay {
+    /* display: none; */
+    position: fixed;
+    z-index: 998;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.3);
+}

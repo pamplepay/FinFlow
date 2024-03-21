@@ -29,3 +29,5 @@ tomli==2.0.1
 urllib3==1.26.13
 whitenoise==6.3.0
 django-cors-headers==4.3.1
+easycodefpy==1.0.1
+pycryptodome=3.20.0
